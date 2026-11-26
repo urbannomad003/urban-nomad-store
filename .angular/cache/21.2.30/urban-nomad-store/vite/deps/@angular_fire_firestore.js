@@ -6,6 +6,8 @@ import {
   _registerComponent as _registerComponent2,
   registerVersion as registerVersion2
 } from "./chunk-WPKV4ZUV.js";
+import "./chunk-EAS2W22R.js";
+import "./chunk-6S7AYC2N.js";
 import {
   Component,
   FirebaseApp,
@@ -38,7 +40,6 @@ import {
   ɵzoneWrap
 } from "./chunk-W4MS6LBM.js";
 import "./chunk-VLXAPSNN.js";
-import "./chunk-GT4SBJMO.js";
 import {
   NgModule,
   Optional,

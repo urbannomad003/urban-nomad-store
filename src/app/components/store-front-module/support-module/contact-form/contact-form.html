@@ -1,0 +1,137 @@
+<div class="border border-stone-200 bg-white p-6 sm:p-8">
+  <span class="block text-xs font-semibold uppercase tracking-[0.16em] text-[#a68559]">
+    Send A Message
+  </span>
+  <h2 class="mt-2 text-xl font-bold uppercase tracking-tight text-stone-900">
+    Contact Form
+  </h2>
+  <p class="mt-2 text-sm text-stone-600">
+    Have a question about an order or product? Fill out the form below and our team will assist you.
+  </p>
+
+  <form
+    #contactForm="ngForm"
+    action="https://formspree.io/f/moedryrk"
+    method="POST"
+    (ngSubmit)="onSubmit(contactForm)"
+    class="mt-6 space-y-5"
+    novalidate
+  >
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+      <!-- First Name -->
+      <div>
+        <label for="firstName" class="mb-1.5 block text-xs font-semibold uppercase tracking-[0.08em] text-stone-800">
+          First Name
+        </label>
+        <input
+          id="firstName"
+          name="firstName"
+          type="text"
+          [(ngModel)]="firstName"
+          [disabled]="isSubmitting()"
+          placeholder="First name"
+          class="h-11 w-full border border-stone-300 bg-white px-3.5 text-sm text-stone-900 placeholder:text-stone-400 focus:border-[#a68559] focus:outline-none disabled:bg-stone-100"
+        />
+      </div>
+
+      <!-- Second Name -->
+      <div>
+        <label for="secondName" class="mb-1.5 block text-xs font-semibold uppercase tracking-[0.08em] text-stone-800">
+          Second Name
+        </label>
+        <input
+          id="secondName"
+          name="secondName"
+          type="text"
+          [(ngModel)]="secondName"
+          [disabled]="isSubmitting()"
+          placeholder="Second name"
+          class="h-11 w-full border border-stone-300 bg-white px-3.5 text-sm text-stone-900 placeholder:text-stone-400 focus:border-[#a68559] focus:outline-none disabled:bg-stone-100"
+        />
+      </div>
+    </div>
+
+    <!-- Email Address (Required) -->
+    <div>
+      <label for="email" class="mb-1.5 block text-xs font-semibold uppercase tracking-[0.08em] text-stone-800">
+        Email Address <span class="text-red-600">*</span>
+      </label>
+      <input
+        id="email"
+        name="email"
+        type="email"
+        required
+        email
+        #emailInput="ngModel"
+        [(ngModel)]="email"
+        [disabled]="isSubmitting()"
+        placeholder="you@example.com"
+        class="h-11 w-full border border-stone-300 bg-white px-3.5 text-sm text-stone-900 placeholder:text-stone-400 focus:border-[#a68559] focus:outline-none disabled:bg-stone-100"
+      />
+      @if (emailInput.invalid && (emailInput.touched || contactForm.submitted)) {
+        <p class="mt-1.5 text-xs font-medium text-red-700">
+          Please enter a valid email address.
+        </p>
+      }
+    </div>
+
+    <!-- Phone Number (Optional) -->
+    <div>
+      <label for="phone" class="mb-1.5 block text-xs font-semibold uppercase tracking-[0.08em] text-stone-800">
+        Phone Number <span class="font-normal normal-case text-stone-400">(Optional)</span>
+      </label>
+      <input
+        id="phone"
+        name="phone"
+        type="tel"
+        [(ngModel)]="phone"
+        [disabled]="isSubmitting()"
+        placeholder="081 424 1429"
+        class="h-11 w-full border border-stone-300 bg-white px-3.5 text-sm text-stone-900 placeholder:text-stone-400 focus:border-[#a68559] focus:outline-none disabled:bg-stone-100"
+      />
+    </div>
+
+    <!-- Description (Required) -->
+    <div>
+      <label for="description" class="mb-1.5 block text-xs font-semibold uppercase tracking-[0.08em] text-stone-800">
+        Description <span class="text-red-600">*</span>
+      </label>
+      <textarea
+        id="description"
+        name="description"
+        rows="5"
+        required
+        #descriptionInput="ngModel"
+        [(ngModel)]="description"
+        [disabled]="isSubmitting()"
+        placeholder="How can we help you?"
+        class="w-full border border-stone-300 bg-white p-3.5 text-sm text-stone-900 placeholder:text-stone-400 focus:border-[#a68559] focus:outline-none disabled:bg-stone-100"
+      ></textarea>
+      @if (descriptionInput.invalid && (descriptionInput.touched || contactForm.submitted)) {
+        <p class="mt-1.5 text-xs font-medium text-red-700">
+          Please enter a description.
+        </p>
+      }
+    </div>
+
+    @if (errorMessage()) {
+      <p class="text-sm font-medium text-red-700">
+        {{ errorMessage() }}
+      </p>
+    }
+
+    @if (submitted()) {
+      <div class="border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800">
+        Your message has been sent. We will get back to you shortly.
+      </div>
+    }
+
+    <button
+      type="submit"
+      [disabled]="isSubmitting()"
+      class="h-11 w-full cursor-pointer bg-black px-6 text-xs font-semibold uppercase tracking-[0.14em] text-white transition-colors hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+    >
+      {{ isSubmitting() ? 'Sending...' : 'Send Message' }}
+    </button>
+  </form>
+</div>
