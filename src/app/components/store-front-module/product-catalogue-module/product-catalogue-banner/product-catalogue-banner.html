@@ -1,0 +1,52 @@
+<!-- The photo itself is the banner: 80% of the screen width on desktop (full width with side padding on mobile).
+     Mobile: portrait. Tablet: 4:3. Desktop: scales with window height, between 480px and 700px. -->
+<section class="mx-auto my-10 w-full px-4 sm:px-6 lg:my-16 lg:w-4/5 lg:max-w-[1600px] lg:px-0">
+  <div
+    class="group relative flex aspect-[4/5] max-h-[70svh] w-full overflow-hidden bg-stone-200
+           sm:aspect-[4/3] lg:aspect-auto lg:max-h-none lg:h-[clamp(480px,65vh,700px)]"
+  >
+    <!-- Mobile / Tablet image -->
+    <img
+      [src]="mobileImage"
+      [alt]="imageAlt"
+      loading="lazy"
+      class="absolute inset-0 h-full w-full object-cover object-[50%_15%] transition-transform duration-[1500ms] ease-out
+             group-hover:scale-105 motion-reduce:transition-none lg:hidden"
+    />
+
+    <!-- Desktop image -->
+    <img
+      [src]="desktopImage"
+      [alt]="imageAlt"
+      loading="lazy"
+      class="absolute inset-0 hidden h-full w-full object-cover object-[50%_15%] transition-transform duration-[1500ms] ease-out
+             group-hover:scale-105 motion-reduce:transition-none lg:block"
+    />
+
+    <!-- Dark fade so the text stays readable: from the bottom on mobile, from the left on desktop -->
+    <div
+      class="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.75),rgba(0,0,0,0.1)_60%,transparent)]
+             lg:bg-[linear-gradient(to_right,rgba(0,0,0,0.6),rgba(0,0,0,0.2)_40%,transparent_60%)]"
+      aria-hidden="true"
+    ></div>
+
+    <div class="relative z-10 flex w-full items-end px-6 pb-8 sm:px-10 sm:pb-10 lg:items-center lg:px-16 lg:pb-0">
+      <div class="max-w-md text-white">
+        <h2 class="text-3xl font-semibold leading-tight tracking-tight sm:text-4xl lg:text-5xl">
+          {{ heading }}
+        </h2>
+        <p class="mt-3 text-[15px] leading-relaxed text-white/90 sm:text-base">
+          {{ subheading }}
+        </p>
+        <a
+          [routerLink]="ctaLink"
+          class="mt-6 inline-block bg-white px-7 py-3 text-[13px] font-semibold uppercase tracking-[0.12em] text-stone-900
+                 transition duration-300 ease-out hover:-translate-y-0.5 hover:bg-stone-200
+                 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        >
+          {{ ctaLabel }}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

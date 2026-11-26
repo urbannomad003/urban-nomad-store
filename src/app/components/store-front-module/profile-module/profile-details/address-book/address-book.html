@@ -1,0 +1,194 @@
+<div class="min-h-[450px] border-x-0 border-y border-stone-200 bg-white px-5 py-7 md:border md:p-10">
+  <div class="mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-stone-200 pb-4">
+    <h2 class="text-xl font-semibold uppercase tracking-[0.06em] text-black">
+      Address Book
+    </h2>
+
+    @if (!isLoading() && !savedAddress()) {
+      <button
+        type="button"
+        (click)="openAddressModal()"
+        class="cursor-pointer rounded bg-black px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.08em] text-white transition-colors duration-200 hover:bg-stone-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a68559]"
+      >
+        Add Address
+      </button>
+    }
+  </div>
+
+  <p class="mb-8 text-sm leading-[1.7] text-stone-600">
+    Manage your saved delivery and physical address used for checkout and account records.
+  </p>
+
+  @if (isLoading()) {
+    <p class="text-sm text-stone-600">Loading saved addresses...</p>
+  }
+
+  @if (!isLoading() && errorMessage() && !isModalOpen()) {
+    <p class="mb-5 text-[13px] font-medium text-red-600">{{ errorMessage() }}</p>
+  }
+
+  @if (!isLoading()) {
+    @if (savedAddress(); as address) {
+      <div class="border border-stone-200 bg-stone-50/50 p-6">
+        <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
+          <div class="space-y-1 text-sm text-stone-800">
+            <span class="mb-2 inline-block rounded bg-[#c8a97e]/20 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#a68559]">
+              Primary Address
+            </span>
+            <p class="font-semibold text-black">{{ address.street }}</p>
+            <p>{{ address.suburb }}</p>
+            <p>{{ address.city }}, {{ address.province }}</p>
+            <p class="text-stone-600">{{ address.postalCode }}</p>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button
+              type="button"
+              (click)="openAddressModal()"
+              class="cursor-pointer rounded border border-stone-300 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.06em] text-stone-800 transition-colors hover:border-black hover:text-black"
+            >
+              Edit
+            </button>
+            <button
+              type="button"
+              [disabled]="isRemoving()"
+              (click)="removeAddress()"
+              class="cursor-pointer rounded border border-red-200 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.06em] text-red-600 transition-colors hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {{ isRemoving() ? 'Removing…' : 'Remove' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    } @else {
+      <div class="border border-dashed border-stone-300 bg-stone-50/50 p-8">
+        <h3 class="text-sm font-semibold uppercase tracking-[0.05em] text-stone-900">
+          No Saved Addresses
+        </h3>
+        <p class="mt-1 text-sm text-stone-600">
+          You haven't added a physical address yet. Add one now to save it to your profile.
+        </p>
+      </div>
+    }
+  }
+
+  @if (isModalOpen()) {
+    <div
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="address-modal-title"
+    >
+      <div class="w-full max-w-lg rounded-md border border-stone-200 bg-white p-6 shadow-xl sm:p-8">
+        <div class="mb-6 flex items-center justify-between border-b border-stone-200 pb-4">
+          <h3 id="address-modal-title" class="text-base font-semibold uppercase tracking-[0.06em] text-black">
+            {{ savedAddress() ? 'Edit Address' : 'Add Address' }}
+          </h3>
+          <button
+            type="button"
+            (click)="closeAddressModal()"
+            aria-label="Close modal"
+            class="cursor-pointer rounded p-1 text-stone-500 transition-colors hover:bg-stone-100 hover:text-black"
+          >
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <form [formGroup]="addressForm" (ngSubmit)="saveAddress()" class="space-y-4">
+          <div>
+            <label for="addr-street" class="block text-xs font-semibold uppercase tracking-[0.05em] text-stone-700">
+              Street Address
+            </label>
+            <input
+              id="addr-street"
+              type="text"
+              formControlName="street"
+              placeholder="e.g. 42 Burnett Street"
+              class="mt-1.5 w-full rounded border border-stone-300 bg-white px-3.5 py-2 text-sm text-black outline-none transition-colors focus:border-black"
+            />
+          </div>
+
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label for="addr-suburb" class="block text-xs font-semibold uppercase tracking-[0.05em] text-stone-700">
+                Suburb
+              </label>
+              <input
+                id="addr-suburb"
+                type="text"
+                formControlName="suburb"
+                placeholder="e.g. Hatfield"
+                class="mt-1.5 w-full rounded border border-stone-300 bg-white px-3.5 py-2 text-sm text-black outline-none transition-colors focus:border-black"
+              />
+            </div>
+
+            <div>
+              <label for="addr-city" class="block text-xs font-semibold uppercase tracking-[0.05em] text-stone-700">
+                City
+              </label>
+              <input
+                id="addr-city"
+                type="text"
+                formControlName="city"
+                placeholder="e.g. Pretoria"
+                class="mt-1.5 w-full rounded border border-stone-300 bg-white px-3.5 py-2 text-sm text-black outline-none transition-colors focus:border-black"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label for="addr-province" class="block text-xs font-semibold uppercase tracking-[0.05em] text-stone-700">
+                Province
+              </label>
+              <input
+                id="addr-province"
+                type="text"
+                formControlName="province"
+                placeholder="e.g. Gauteng"
+                class="mt-1.5 w-full rounded border border-stone-300 bg-white px-3.5 py-2 text-sm text-black outline-none transition-colors focus:border-black"
+              />
+            </div>
+
+            <div>
+              <label for="addr-postal" class="block text-xs font-semibold uppercase tracking-[0.05em] text-stone-700">
+                Postal Code
+              </label>
+              <input
+                id="addr-postal"
+                type="text"
+                formControlName="postalCode"
+                placeholder="e.g. 0028"
+                class="mt-1.5 w-full rounded border border-stone-300 bg-white px-3.5 py-2 text-sm text-black outline-none transition-colors focus:border-black"
+              />
+            </div>
+          </div>
+
+          @if (errorMessage()) {
+            <p class="text-[13px] font-medium text-red-600">{{ errorMessage() }}</p>
+          }
+
+          <div class="mt-6 flex items-center justify-end gap-3 pt-2">
+            <button
+              type="button"
+              [disabled]="isSaving()"
+              (click)="closeAddressModal()"
+              class="cursor-pointer rounded border border-stone-300 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-stone-700 transition-colors hover:bg-stone-100 hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              [disabled]="addressForm.invalid || isSaving()"
+              class="cursor-pointer rounded bg-black px-5 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-white transition-colors hover:bg-stone-800 disabled:cursor-not-allowed disabled:bg-stone-300"
+            >
+              {{ isSaving() ? 'Saving…' : 'Save Address' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+</div>

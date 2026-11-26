@@ -1,0 +1,11 @@
+@if (!isAuthRoute()) {
+  <app-header class="sticky top-0 z-40 block" [bagCount]="0" [alertCount]="0" />
+}
+
+<main>
+  <router-outlet />
+</main>
+
+@if (!isAuthRoute()) {
+  <app-footer />
+}

@@ -1,0 +1,130 @@
+<div class="min-h-[450px] border-x-0 border-y border-stone-200 bg-white px-5 py-7 md:border md:p-10">
+  <h2 class="mb-6 border-b border-stone-200 pb-4 text-xl font-semibold uppercase tracking-[0.06em] text-black">
+    Account Management
+  </h2>
+  <p class="mb-8 text-sm leading-[1.7] text-stone-600">
+    Permanently remove your Urban Nomad account, authentication profile, and stored user record.
+  </p>
+
+  @if (step() === 'idle') {
+    <div class="flex flex-col items-start gap-4 border border-stone-200 bg-stone-50/60 p-6">
+      <div>
+        <h3 class="text-sm font-semibold uppercase tracking-[0.05em] text-stone-900">Delete Account</h3>
+        <p class="mt-1 text-sm text-stone-600">
+          This permanently deletes your login credentials and your Firestore user document. This action cannot be undone.
+        </p>
+      </div>
+      <button
+        type="button"
+        (click)="startDeleteFlow()"
+        class="cursor-pointer rounded border border-red-600 bg-red-600 px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.08em] text-white transition-colors duration-200 hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a68559]"
+      >
+        Delete Account
+      </button>
+    </div>
+  }
+
+  @if (step() === 'confirm') {
+    <div class="max-w-lg border border-stone-200 bg-white p-6">
+      <h3 class="text-base font-semibold text-stone-900">
+        Are you sure you want to delete your account?
+      </h3>
+      <p class="mt-2 text-sm leading-relaxed text-stone-600">
+        Your account will be permanently removed from authentication and the users collection.
+      </p>
+
+      <div class="mt-6 flex items-center gap-3">
+        <button
+          type="button"
+          (click)="confirmYes()"
+          class="cursor-pointer rounded bg-red-600 px-5 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-white transition-colors duration-200 hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a68559]"
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          (click)="cancelDeleteFlow()"
+          class="cursor-pointer rounded border border-stone-300 bg-white px-5 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-stone-700 transition-colors duration-200 hover:bg-stone-100 hover:text-black"
+        >
+          No
+        </button>
+      </div>
+    </div>
+  }
+
+  @if (step() === 'verify') {
+    <form
+      (submit)="$event.preventDefault(); confirmAccountDeletion()"
+      class="max-w-lg border border-stone-200 bg-white p-6"
+    >
+      <label
+        for="delete-confirm-phrase"
+        class="block text-xs font-semibold uppercase tracking-[0.05em] text-stone-700"
+      >
+        Type <span class="font-bold text-black">{{ requiredPhrase }}</span> to verify
+      </label>
+      <p class="mt-1 text-xs text-stone-500">
+        Copy and paste are disabled—you must type {{ requiredPhrase }} manually.
+      </p>
+
+      <input
+        id="delete-confirm-phrase"
+        type="text"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="characters"
+        spellcheck="false"
+        [value]="typedPhrase()"
+        (input)="onPhraseInput($event)"
+        (paste)="blockClipboardAction($event)"
+        (copy)="blockClipboardAction($event)"
+        (cut)="blockClipboardAction($event)"
+        (drop)="blockClipboardAction($event)"
+        placeholder="URBAN-NOMAD"
+        class="mt-3 w-full rounded border border-stone-300 bg-white px-3.5 py-2.5 text-sm font-medium tracking-[0.06em] text-black outline-none transition-colors focus:border-black"
+      />
+
+      @if (needsReauth()) {
+        <div class="mt-4">
+          <label
+            for="reauth-password"
+            class="block text-xs font-semibold uppercase tracking-[0.05em] text-stone-700"
+          >
+            Current Password
+          </label>
+          <input
+            id="reauth-password"
+            type="password"
+            autocomplete="current-password"
+            [value]="passwordForReauth()"
+            (input)="onPasswordInput($event)"
+            placeholder="Enter your password"
+            class="mt-2 w-full rounded border border-stone-300 bg-white px-3.5 py-2.5 text-sm text-black outline-none transition-colors focus:border-black"
+          />
+        </div>
+      }
+
+      @if (errorMessage()) {
+        <p class="mt-3 text-[13px] font-medium text-red-600">{{ errorMessage() }}</p>
+      }
+
+      <div class="mt-6 flex items-center gap-3">
+        <button
+          type="submit"
+          [disabled]="!isPhraseMatching() || isDeleting()"
+          class="cursor-pointer rounded bg-red-600 px-5 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-white transition-colors duration-200 hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-stone-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a68559]"
+        >
+          {{ isDeleting() ? 'Deleting…' : 'Permanently Delete Account' }}
+        </button>
+        <button
+          type="button"
+          [disabled]="isDeleting()"
+          (click)="cancelDeleteFlow()"
+          class="cursor-pointer rounded border border-stone-300 bg-white px-5 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-stone-700 transition-colors duration-200 hover:bg-stone-100 hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  }
+</div>

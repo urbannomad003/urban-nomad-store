@@ -1,0 +1,113 @@
+<!-- Mobile Sticky Dropdown -->
+<div class="border-b border-stone-200 bg-white/95 px-4 py-3 backdrop-blur-sm lg:hidden">
+  <div class="relative mx-auto max-w-[1380px]">
+    <span class="mb-1 block text-[11px] font-semibold uppercase tracking-[0.14em] text-[#a68559]">
+      Select Legal Section
+    </span>
+    <button
+      type="button"
+      (click)="toggleDropdown()"
+      [attr.aria-expanded]="mobileDropdownOpen"
+      aria-haspopup="listbox"
+      class="flex w-full cursor-pointer items-center justify-between gap-3 border border-stone-300 bg-white px-4 py-3 text-left text-[13px] font-semibold uppercase tracking-normal text-stone-900 transition-colors hover:border-[#a68559] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#a68559]"
+    >
+      <span class="truncate">
+        {{ selectedTopic.number }}. {{ selectedTopic.title }}
+      </span>
+      <svg
+        class="h-4 w-4 shrink-0 text-[#a68559] transition-transform duration-200"
+        [class]="mobileDropdownOpen ? 'rotate-180' : 'rotate-0'"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="2"
+        stroke="currentColor"
+        aria-hidden="true"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+      </svg>
+    </button>
+
+    <!-- Dropdown list -->
+    <div
+      role="listbox"
+      class="absolute left-0 right-0 top-full z-40 mt-1 max-h-[60svh] overflow-y-auto border border-stone-200 bg-white shadow-xl transition-all duration-200 ease-out"
+      [class]="
+        mobileDropdownOpen
+          ? 'pointer-events-auto translate-y-0 opacity-100'
+          : 'pointer-events-none -translate-y-1 opacity-0'
+      "
+    >
+      <ul class="divide-y divide-stone-100">
+        @for (topic of topics; track topic.id) {
+          <li>
+            <button
+              type="button"
+              role="option"
+              [attr.aria-selected]="selectedTopicId === topic.id"
+              (click)="onSelectTopic(topic.id)"
+              class="flex w-full cursor-pointer items-center justify-between gap-3 px-4 py-3 text-left text-[13px] uppercase tracking-normal transition-colors"
+              [class]="
+                selectedTopicId === topic.id
+                  ? 'bg-stone-50 font-semibold text-[#a68559]'
+                  : 'font-medium text-stone-700 hover:bg-stone-50 hover:text-stone-900'
+              "
+            >
+              <span>{{ topic.number }}. {{ topic.title }}</span>
+              @if (selectedTopicId === topic.id) {
+                <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#a68559]"></span>
+              }
+            </button>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Desktop Left Navigation Sidebar -->
+<aside
+  aria-label="Terms of Use Sections"
+  class="hidden lg:block lg:w-[320px]"
+  [style.transform]="'translateY(' + desktopOffsetY + 'px)'"
+>
+  <div class="border border-stone-200 bg-white p-6">
+    <span class="mb-1 block text-[11px] font-semibold uppercase tracking-[0.15em] text-[#a68559]">
+      Contents
+    </span>
+    <h2 class="mb-5 border-b border-stone-200 pb-4 text-sm font-bold uppercase tracking-[0.08em] text-stone-900">
+      Terms of Use
+    </h2>
+
+    <nav>
+      <ul class="flex flex-col gap-1">
+        @for (topic of topics; track topic.id) {
+          <li>
+            <button
+              type="button"
+              (click)="onSelectTopic(topic.id)"
+              [attr.aria-current]="selectedTopicId === topic.id ? 'true' : null"
+              class="group flex w-full cursor-pointer items-start gap-2.5 border-l-2 px-3 py-2.5 text-left text-[13px] uppercase tracking-normal transition-all duration-200"
+              [class]="
+                selectedTopicId === topic.id
+                  ? 'border-[#a68559] bg-stone-50 font-semibold text-stone-900'
+                  : 'border-transparent font-medium text-stone-600 hover:border-stone-300 hover:bg-stone-50/60 hover:text-stone-900'
+              "
+            >
+              <span
+                class="shrink-0 font-mono text-xs transition-colors"
+                [class]="
+                  selectedTopicId === topic.id
+                    ? 'text-[#a68559]'
+                    : 'text-stone-400 group-hover:text-stone-600'
+                "
+              >
+                {{ topic.number.padStart(2, '0') }}
+              </span>
+              <span class="leading-snug">{{ topic.title }}</span>
+            </button>
+          </li>
+        }
+      </ul>
+    </nav>
+  </div>
+</aside>

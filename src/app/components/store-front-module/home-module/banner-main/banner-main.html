@@ -1,0 +1,40 @@
+<!-- Mobile: portrait (4:5, capped at 70% of screen height). Tablet: 4:3. Desktop: scales with the window height, between 560px and 820px. -->
+<section
+  class="group relative flex aspect-[4/5] max-h-[70svh] w-full overflow-hidden bg-[#c8a97e]/30
+         sm:aspect-[4/3] lg:aspect-auto lg:max-h-none lg:h-[clamp(560px,80vh,820px)]"
+>
+  <!-- Below 640px (Tailwind's sm breakpoint) the mobile image is used; otherwise the desktop one.
+       object-top keeps the model's head in frame; origin-top makes the hover zoom grow downward. -->
+  <picture class="absolute inset-0 block h-full w-full">
+    <source media="(max-width: 639px)" [srcset]="imageMobile" />
+    <img
+      [src]="image"
+      [alt]="imageAlt"
+      fetchpriority="high"
+      class="h-full w-full origin-top object-cover object-top transition-transform duration-[1500ms] ease-out
+             group-hover:scale-105 motion-reduce:transition-none"
+    />
+  </picture>
+
+  <!-- Solid gold overlay (footer gold shade #a68559) over the whole image so the text stays readable. Change /55 to adjust strength -->
+  <div class="absolute inset-0 bg-[#a68559]/55" aria-hidden="true"></div>
+
+  <div class="relative z-10 mx-auto flex w-full max-w-[1500px] items-end px-4 pb-8 sm:px-6 sm:pb-10 lg:items-center lg:px-8 lg:pb-0">
+    <div class="max-w-md text-white sm:max-w-lg">
+      <h2 class="text-3xl font-semibold leading-tight tracking-tight sm:text-4xl lg:text-5xl">
+        {{ heading }}
+      </h2>
+      <p class="mt-3 text-[15px] leading-relaxed text-white/90 sm:text-base">
+        {{ subheading }}
+      </p>
+      <a
+        [routerLink]="ctaLink"
+        class="mt-6 inline-block bg-white px-7 py-3 text-[13px] font-semibold uppercase tracking-[0.12em] text-stone-900
+               transition duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#c8a97e]
+               focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+      >
+        {{ ctaLabel }}
+      </a>
+    </div>
+  </div>
+</section>

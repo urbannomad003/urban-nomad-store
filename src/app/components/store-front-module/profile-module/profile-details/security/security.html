@@ -1,0 +1,50 @@
+<div class="min-h-[450px] border-x-0 border-y border-stone-200 bg-white px-5 py-7 md:border md:p-10">
+  <h2 class="mb-6 border-b border-stone-200 pb-4 text-xl font-semibold uppercase tracking-[0.06em] text-black">
+    Security
+  </h2>
+  <p class="mb-8 text-sm leading-[1.7] text-stone-600">
+    Manage your account password and authentication security settings.
+  </p>
+
+  @if (isLoadingUser()) {
+    <p class="text-sm text-stone-600">Loading security settings...</p>
+  }
+
+  @if (!isLoadingUser()) {
+    <div class="flex flex-col items-start gap-4 border border-stone-200 bg-stone-50/60 p-6">
+      <div>
+        <h3 class="text-sm font-semibold uppercase tracking-[0.05em] text-stone-900">
+          Password Reset
+        </h3>
+        <p class="mt-1 text-sm text-stone-600">
+          Send a password reset link to your registered email address
+          @if (userEmail(); as email) {
+            (<span class="font-medium text-stone-900">{{ email }}</span>)
+          }.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        [disabled]="isSending() || !userEmail()"
+        (click)="sendResetLink()"
+        class="cursor-pointer rounded bg-black px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.08em] text-white transition-colors duration-200 hover:bg-stone-800 disabled:cursor-not-allowed disabled:bg-stone-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a68559]"
+      >
+        {{ isSending() ? 'Sending…' : 'Reset Password' }}
+      </button>
+
+      @if (resetSent()) {
+        <div
+          role="status"
+          class="mt-2 w-full rounded border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-900"
+        >
+          A password reset link was sent to your email address (<span class="font-semibold">{{ userEmail() }}</span>). Please check your email.
+        </div>
+      }
+
+      @if (errorMessage()) {
+        <p class="mt-1 text-[13px] font-medium text-red-600">{{ errorMessage() }}</p>
+      }
+    </div>
+  }
+</div>

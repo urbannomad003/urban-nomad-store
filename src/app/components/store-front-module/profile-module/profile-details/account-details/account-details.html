@@ -1,0 +1,229 @@
+<div class="min-h-[450px] border-x-0 border-y border-stone-200 bg-white px-5 py-7 md:min-h-[450px] md:border md:p-10">
+  <h2 class="mb-6 border-b border-stone-200 pb-4 text-xl font-semibold uppercase tracking-[0.06em] text-black">
+    User Details
+  </h2>
+  <p class="mb-8 text-sm leading-[1.7] text-stone-600">
+    Manage your personal profile metadata, contact configuration options, and public visibility options here.
+  </p>
+
+  @if (isLoading()) {
+    <p class="mb-5 text-sm text-stone-600">Loading your details...</p>
+  }
+
+  @if (saveError()) {
+    <p class="mb-4 text-[13px] font-medium text-red-600">{{ saveError() }}</p>
+  }
+
+  @if (!isLoading()) {
+    <form [formGroup]="detailsForm" class="flex flex-col gap-0 bg-white">
+
+      <!-- Title -->
+      <div class="flex flex-row items-center justify-between border-b border-stone-100 bg-white py-5">
+        <div class="flex flex-1 flex-col gap-1 bg-white pr-5">
+          <label class="m-0 text-xs font-semibold uppercase tracking-[0.04em] text-stone-500">Title</label>
+          @if (!editStates['title']) {
+            <span class="text-[15px] font-medium text-stone-900">
+              {{ detailsForm.get('title')?.value || 'Not specified' }}
+            </span>
+          } @else {
+            <select
+              formControlName="title"
+              class="w-full max-w-full rounded border border-stone-300 bg-white px-3 py-2 text-sm text-black outline-none transition-colors focus:border-black md:max-w-[320px]"
+            >
+              <option value="">— Select —</option>
+              <option value="Mr">Mr</option>
+              <option value="Mrs">Mrs</option>
+              <option value="Ms">Ms</option>
+              <option value="Dr">Dr</option>
+            </select>
+          }
+        </div>
+
+        <div class="flex items-center gap-3 bg-white">
+          @if (!editStates['title']) {
+            <button
+              type="button"
+              (click)="toggleEdit('title')"
+              aria-label="Edit Title"
+              class="flex cursor-pointer items-center justify-center rounded border-0 bg-white p-1.5 text-stone-600 transition-colors duration-200 hover:bg-stone-100 hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#a68559]"
+            >
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+              </svg>
+            </button>
+          } @else {
+            <button
+              type="button"
+              [disabled]="isSaving('title')"
+              (click)="saveField('title')"
+              class="cursor-pointer border-0 bg-white px-2 py-1 text-[13px] font-semibold uppercase tracking-[0.04em] text-black transition-colors disabled:cursor-not-allowed disabled:text-stone-300"
+            >
+              {{ isSaving('title') ? 'Saving…' : 'Save' }}
+            </button>
+            <button
+              type="button"
+              (click)="cancelEdit('title')"
+              class="cursor-pointer border-0 bg-white px-2 py-1 text-[13px] font-semibold uppercase tracking-[0.04em] text-stone-500 transition-colors hover:text-red-500"
+            >
+              Cancel
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- First Name -->
+      <div class="flex flex-row items-center justify-between border-b border-stone-100 bg-white py-5">
+        <div class="flex flex-1 flex-col gap-1 bg-white pr-5">
+          <label class="m-0 text-xs font-semibold uppercase tracking-[0.04em] text-stone-500">First Name</label>
+          @if (!editStates['firstName']) {
+            <span class="text-[15px] font-medium text-stone-900">
+              {{ detailsForm.get('firstName')?.value || 'Not specified' }}
+            </span>
+          } @else {
+            <input
+              type="text"
+              formControlName="firstName"
+              placeholder="First name"
+              class="w-full max-w-full rounded border border-stone-300 bg-white px-3 py-2 text-sm text-black outline-none transition-colors focus:border-black md:max-w-[320px]"
+            />
+          }
+        </div>
+
+        <div class="flex items-center gap-3 bg-white">
+          @if (!editStates['firstName']) {
+            <button
+              type="button"
+              (click)="toggleEdit('firstName')"
+              aria-label="Edit First Name"
+              class="flex cursor-pointer items-center justify-center rounded border-0 bg-white p-1.5 text-stone-600 transition-colors duration-200 hover:bg-stone-100 hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#a68559]"
+            >
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+              </svg>
+            </button>
+          } @else {
+            <button
+              type="button"
+              [disabled]="detailsForm.get('firstName')?.invalid || isSaving('firstName')"
+              (click)="saveField('firstName')"
+              class="cursor-pointer border-0 bg-white px-2 py-1 text-[13px] font-semibold uppercase tracking-[0.04em] text-black transition-colors disabled:cursor-not-allowed disabled:text-stone-300"
+            >
+              {{ isSaving('firstName') ? 'Saving…' : 'Save' }}
+            </button>
+            <button
+              type="button"
+              (click)="cancelEdit('firstName')"
+              class="cursor-pointer border-0 bg-white px-2 py-1 text-[13px] font-semibold uppercase tracking-[0.04em] text-stone-500 transition-colors hover:text-red-500"
+            >
+              Cancel
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Last Name -->
+      <div class="flex flex-row items-center justify-between border-b border-stone-100 bg-white py-5">
+        <div class="flex flex-1 flex-col gap-1 bg-white pr-5">
+          <label class="m-0 text-xs font-semibold uppercase tracking-[0.04em] text-stone-500">Last Name</label>
+          @if (!editStates['lastName']) {
+            <span class="text-[15px] font-medium text-stone-900">
+              {{ detailsForm.get('lastName')?.value || 'Not specified' }}
+            </span>
+          } @else {
+            <input
+              type="text"
+              formControlName="lastName"
+              placeholder="Last name"
+              class="w-full max-w-full rounded border border-stone-300 bg-white px-3 py-2 text-sm text-black outline-none transition-colors focus:border-black md:max-w-[320px]"
+            />
+          }
+        </div>
+
+        <div class="flex items-center gap-3 bg-white">
+          @if (!editStates['lastName']) {
+            <button
+              type="button"
+              (click)="toggleEdit('lastName')"
+              aria-label="Edit Last Name"
+              class="flex cursor-pointer items-center justify-center rounded border-0 bg-white p-1.5 text-stone-600 transition-colors duration-200 hover:bg-stone-100 hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#a68559]"
+            >
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+              </svg>
+            </button>
+          } @else {
+            <button
+              type="button"
+              [disabled]="detailsForm.get('lastName')?.invalid || isSaving('lastName')"
+              (click)="saveField('lastName')"
+              class="cursor-pointer border-0 bg-white px-2 py-1 text-[13px] font-semibold uppercase tracking-[0.04em] text-black transition-colors disabled:cursor-not-allowed disabled:text-stone-300"
+            >
+              {{ isSaving('lastName') ? 'Saving…' : 'Save' }}
+            </button>
+            <button
+              type="button"
+              (click)="cancelEdit('lastName')"
+              class="cursor-pointer border-0 bg-white px-2 py-1 text-[13px] font-semibold uppercase tracking-[0.04em] text-stone-500 transition-colors hover:text-red-500"
+            >
+              Cancel
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Date of Birth -->
+      <div class="flex flex-row items-center justify-between border-b-0 bg-white py-5">
+        <div class="flex flex-1 flex-col gap-1 bg-white pr-5">
+          <label class="m-0 text-xs font-semibold uppercase tracking-[0.04em] text-stone-500">Date of Birth</label>
+          @if (!editStates['dob']) {
+            <span class="text-[15px] font-medium text-stone-900">
+              {{
+                detailsForm.get('dob')?.value
+                  ? (detailsForm.get('dob')?.value | date:'longDate')
+                  : 'Not specified'
+              }}
+            </span>
+          } @else {
+            <input
+              type="date"
+              formControlName="dob"
+              class="w-full max-w-full rounded border border-stone-300 bg-white px-3 py-2 text-sm text-black outline-none transition-colors focus:border-black md:max-w-[320px]"
+            />
+          }
+        </div>
+
+        <div class="flex items-center gap-3 bg-white">
+          @if (!editStates['dob']) {
+            <button
+              type="button"
+              (click)="toggleEdit('dob')"
+              aria-label="Edit Date of Birth"
+              class="flex cursor-pointer items-center justify-center rounded border-0 bg-white p-1.5 text-stone-600 transition-colors duration-200 hover:bg-stone-100 hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#a68559]"
+            >
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+              </svg>
+            </button>
+          } @else {
+            <button
+              type="button"
+              [disabled]="isSaving('dob')"
+              (click)="saveField('dob')"
+              class="cursor-pointer border-0 bg-white px-2 py-1 text-[13px] font-semibold uppercase tracking-[0.04em] text-black transition-colors disabled:cursor-not-allowed disabled:text-stone-300"
+            >
+              {{ isSaving('dob') ? 'Saving…' : 'Save' }}
+            </button>
+            <button
+              type="button"
+              (click)="cancelEdit('dob')"
+              class="cursor-pointer border-0 bg-white px-2 py-1 text-[13px] font-semibold uppercase tracking-[0.04em] text-stone-500 transition-colors hover:text-red-500"
+            >
+              Cancel
+            </button>
+          }
+        </div>
+      </div>
+
+    </form>
+  }
+</div>

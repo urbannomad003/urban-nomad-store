@@ -1,0 +1,35 @@
+<!-- Wider than the featured products carousel (which is 80% of the screen): this one runs almost edge to edge. -->
+<section class="my-10 w-full px-4 sm:px-6 lg:my-16 lg:px-8" aria-labelledby="catalogue-widget-heading">
+  <div class="mb-6 flex items-end justify-between gap-4">
+    <h2 id="catalogue-widget-heading" class="text-2xl font-semibold tracking-tight text-stone-900 sm:text-3xl">
+      Product Catalogue
+    </h2>
+  </div>
+
+  <div class="grid grid-cols-1 gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-6">
+    @for (item of items; track item.id) {
+      <a
+        [routerLink]="item.link"
+        class="group block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-rose-700"
+      >
+        <div class="aspect-square overflow-hidden bg-stone-100 sm:aspect-[4/5]">
+          <img
+            [src]="item.image"
+            [alt]="item.name"
+            loading="lazy"
+            class="h-full w-full object-cover object-top transition-transform duration-700 ease-out
+                   group-hover:scale-105 motion-reduce:transition-none"
+          />
+        </div>
+        <h3
+          class="relative mt-3 inline-block text-[15px] font-semibold text-stone-900
+                 after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0
+                 after:bg-stone-900 after:transition-transform after:duration-300 after:ease-out group-hover:after:scale-x-100"
+        >
+          {{ item.name }}
+        </h3>
+        <p class="mt-1 line-clamp-2 text-sm leading-relaxed text-stone-600">{{ item.description }}</p>
+      </a>
+    }
+  </div>
+</section>

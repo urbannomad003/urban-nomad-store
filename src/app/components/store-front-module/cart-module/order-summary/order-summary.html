@@ -1,0 +1,33 @@
+<div class="border border-stone-200 bg-stone-50 p-6">
+  <h2 class="border-b border-stone-200 pb-4 text-xl font-semibold tracking-tight text-stone-900">
+    Order Summary
+  </h2>
+
+  <div class="mt-4 space-y-3 text-sm">
+    <div class="flex items-center justify-between text-stone-600">
+      <span>Items</span>
+      <span class="font-medium text-stone-900">{{ totalItems() }}</span>
+    </div>
+
+    <div class="flex items-center justify-between text-stone-600">
+      <span>Subtotal</span>
+      <span class="text-base font-bold text-[#8a6a3e]">R {{ subtotal().toFixed(2) }}</span>
+    </div>
+
+    <div class="flex items-center justify-between border-t border-stone-200 pt-3 text-base font-semibold text-stone-900">
+      <span>Estimated Total</span>
+      <span class="font-bold text-[#8a6a3e]">R {{ subtotal().toFixed(2) }}</span>
+    </div>
+  </div>
+
+  <div class="mt-6 flex flex-col gap-3">
+    <button
+      type="button"
+      (click)="onWhatsAppCheckout()"
+      [disabled]="items().length === 0"
+      class="w-full cursor-pointer bg-black px-4 py-3 text-xs font-semibold uppercase tracking-[0.12em] text-white transition duration-200 hover:bg-[#8a6a3e] disabled:cursor-not-allowed disabled:bg-stone-400"
+    >
+      Checkout via WhatsApp
+    </button>
+  </div>
+</div>

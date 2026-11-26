@@ -1,0 +1,15 @@
+<section class="mx-auto my-8 w-full px-4 sm:px-6 lg:my-12 lg:w-4/5 lg:max-w-[1600px] lg:px-0">
+  <div class="flex flex-col gap-6 md:flex-row md:items-start md:gap-8">
+    <div class="min-w-0 flex-1">
+      <app-wishlist-items (addedToCart)="onAddItemToCart($event)" />
+    </div>
+
+    <aside class="w-full shrink-0 md:mt-[84px] md:w-[340px] lg:w-[380px]">
+      <app-add-wishlist-to-cart
+        [items]="wishlistItemsComp()?.wishlistItems() ?? []"
+        [lastAdded]="lastAddedItem()"
+        (moveAllToCart)="onMoveAllToCart()"
+      />
+    </aside>
+  </div>
+</section>

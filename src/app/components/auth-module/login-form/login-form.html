@@ -1,0 +1,191 @@
+<div class="mx-auto my-8 flex w-full justify-center px-4 sm:my-12">
+  <div
+    class="relative box-border w-full max-w-[560px] rounded-[6px] border border-[#e2e8f0] bg-white p-6 shadow-[0_4px_12px_rgba(0,0,0,0.03)] sm:p-10"
+  >
+    @if (isLoading()) {
+      <div
+        class="absolute inset-0 z-20 flex items-center justify-center rounded-[6px] bg-white/85"
+        role="status"
+        aria-live="polite"
+      >
+        <div
+          class="h-8 w-8 animate-spin rounded-full border-4 border-[#c8a97e] border-r-transparent"
+        ></div>
+        <span class="sr-only">Loading...</span>
+      </div>
+    }
+
+    <button
+      type="button"
+      (click)="goBackToHome()"
+      aria-label="Close"
+      class="absolute top-6 right-6 z-15 cursor-pointer border-0 bg-transparent p-0 text-2xl leading-none text-[#adb5bd] transition-colors duration-200 hover:text-[#212529]"
+    >
+      <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <div class="mb-6 flex flex-col items-center text-center">
+      <img
+        src="logo-transparent-background.png"
+        alt="Urban Nomad"
+        class="mb-2 h-auto max-w-[160px] object-contain"
+      />
+      <h4 class="m-0 text-xl font-bold text-[#212529]">Login</h4>
+    </div>
+
+    <div class="mb-3 grid grid-cols-2 gap-3">
+      <button
+        type="button"
+        (click)="onGoogleLogin()"
+        [disabled]="isLoading()"
+        class="flex h-12 w-full cursor-pointer items-center justify-center rounded-[6px] border border-[#e2e8f0] bg-white px-3 py-2 text-[13px] font-medium text-[#495057] transition-all duration-200 hover:border-[#c8a97e] hover:bg-[#f8f9fa] disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        <svg class="mr-2 h-4 w-4 shrink-0 text-[#DB4437]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M21.35 11.1h-9.17v2.73h6.51c-.33 3.81-3.5 5.44-6.5 5.44C8.36 19.27 5 16.25 5 12c0-4.1 3.2-7.27 7.2-7.27 3.09 0 4.9 1.97 4.9 1.97L19 4.72S16.56 2 12.1 2C6.42 2 2.03 6.8 2.03 12c0 5.05 4.13 10 10.22 10 5.35 0 9.25-3.67 9.25-9.09 0-1.15-.15-1.81-.15-1.81Z"
+          />
+        </svg>
+        <span>Login with Google</span>
+      </button>
+
+      <button
+        type="button"
+        (click)="onFacebookLogin()"
+        [disabled]="isLoading()"
+        class="flex h-12 w-full cursor-pointer items-center justify-center rounded-[6px] border border-[#e2e8f0] bg-white px-3 py-2 text-[13px] font-medium text-[#495057] transition-all duration-200 hover:border-[#c8a97e] hover:bg-[#f8f9fa] disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        <svg class="mr-2 h-4 w-4 shrink-0 text-[#1877F2]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
+          />
+        </svg>
+        <span>Login with Facebook</span>
+      </button>
+    </div>
+
+    <div class="relative my-6 text-center">
+      <hr class="border-0 border-t border-[#e2e8f0] opacity-100" />
+      <span
+        class="absolute top-1/2 left-1/2 z-[2] -translate-x-1/2 -translate-y-1/2 bg-white px-3 text-xs font-medium text-[#777777]"
+      >
+        Or
+      </span>
+    </div>
+
+    <form (submit)="onSubmit($event)" novalidate>
+      <div class="relative mb-6 border-b border-[#dee2e6]">
+        <input
+          id="loginEmail"
+          type="email"
+          name="email"
+          autocomplete="email"
+          required
+          [value]="email()"
+          (input)="email.set($any($event.target).value)"
+          placeholder=" "
+          class="peer block w-full rounded-none border-0 bg-transparent px-0 pt-5 pb-2 text-base text-[#212529] shadow-none transition-colors duration-200 focus:border-b-2 focus:border-[#c8a97e] focus:outline-none"
+        />
+        <label
+          for="loginEmail"
+          class="pointer-events-none absolute top-3.5 left-0 origin-left px-0 text-base text-[#6c757d] transition-all duration-200 peer-focus:-translate-y-3 peer-focus:scale-75 peer-focus:text-[#a68559] peer-[:not(:placeholder-shown)]:-translate-y-3 peer-[:not(:placeholder-shown)]:scale-75"
+        >
+          Email Address
+        </label>
+      </div>
+
+      <div class="mb-6">
+        <div class="mb-1 flex justify-end">
+          <a
+            routerLink="/reset-password"
+            class="text-xs font-normal text-[#a68559] no-underline hover:underline"
+          >
+            Forgot Password?
+          </a>
+        </div>
+
+        <div class="relative border-b border-[#dee2e6]">
+          <input
+            id="loginPassword"
+            [type]="showPassword() ? 'text' : 'password'"
+            name="password"
+            autocomplete="current-password"
+            required
+            [value]="password()"
+            (input)="password.set($any($event.target).value)"
+            placeholder=" "
+            class="peer block w-full rounded-none border-0 bg-transparent px-0 pt-5 pb-2 pr-10 text-base text-[#212529] shadow-none transition-colors duration-200 focus:border-b-2 focus:border-[#c8a97e] focus:outline-none"
+          />
+          <label
+            for="loginPassword"
+            class="pointer-events-none absolute top-3.5 left-0 origin-left px-0 text-base text-[#6c757d] transition-all duration-200 peer-focus:-translate-y-3 peer-focus:scale-75 peer-focus:text-[#a68559] peer-[:not(:placeholder-shown)]:-translate-y-3 peer-[:not(:placeholder-shown)]:scale-75"
+          >
+            Password
+          </label>
+
+          <button
+            type="button"
+            (click)="togglePassword()"
+            [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+            class="absolute top-1/2 right-0 z-10 -translate-y-1/2 cursor-pointer border-0 bg-transparent p-0 text-[#6c757d] hover:text-[#212529]"
+          >
+            @if (showPassword()) {
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                />
+              </svg>
+            } @else {
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                />
+              </svg>
+            }
+          </button>
+        </div>
+      </div>
+
+      @if (errorMessage()) {
+        <div class="mb-4 flex items-center py-2 text-[0.85rem] font-medium text-[#d93025]" role="alert">
+          <svg class="mr-1.5 h-4 w-4 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              fill-rule="evenodd"
+              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          <span>{{ errorMessage() }}</span>
+        </div>
+      }
+
+      <button
+        type="submit"
+        [disabled]="!isFormValid || isLoading()"
+        [class]="
+          isFormValid && !isLoading()
+            ? 'mb-4 w-full cursor-pointer rounded-full border-0 bg-[#a68559] py-2.5 text-sm font-bold text-white transition-all duration-300 hover:bg-[#c8a97e]'
+            : 'mb-4 w-full cursor-not-allowed rounded-full border-0 bg-[#e6d7c1] py-2.5 text-sm font-bold text-white transition-all duration-300'
+        "
+      >
+        Login
+      </button>
+    </form>
+
+    <p class="mt-3 text-center text-[0.875rem] text-[#6c757d]">
+      New to Urban Nomad?
+      <a
+        routerLink="/register"
+        class="ml-1 font-bold text-[#a68559] no-underline hover:underline"
+      >
+        Register
+      </a>
+    </p>
+  </div>
+</div>

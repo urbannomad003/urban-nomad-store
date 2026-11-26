@@ -1,0 +1,381 @@
+<!-- Main row: brand | search (desktop centred) | actions -->
+<div
+  class="mx-auto flex max-w-[1380px] items-center justify-between gap-3 px-4 py-3 sm:px-6
+         lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,42rem)_minmax(0,1fr)] lg:gap-x-8 lg:px-8 lg:py-4"
+>
+  <!-- Mobile menu toggle + Brand -->
+  <div class="flex items-center gap-3 lg:col-start-1">
+    <button
+      type="button"
+      (click)="toggleMenu()"
+      [attr.aria-expanded]="menuOpen()"
+      aria-controls="mobile-nav-drawer"
+      [attr.aria-label]="menuOpen() ? 'Close menu' : 'Open menu'"
+      class="-ml-1.5 rounded-full p-1.5 text-stone-900 transition-colors duration-200 hover:bg-stone-100 lg:hidden
+             focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#a68559]"
+    >
+      <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
+      </svg>
+    </button>
+
+    <a
+      routerLink="/"
+      aria-label="Urban Nomad Home"
+      class="flex items-center gap-2.5 text-stone-900 transition-opacity duration-200 hover:opacity-80"
+    >
+      <img
+        src="/logo-transparent-background.png"
+        alt="Urban Nomad"
+        class="h-10 w-auto object-contain sm:h-11 lg:h-12"
+      />
+    </a>
+  </div>
+
+  <!-- Search (desktop only; mobile search lives inside the full-screen mobile menu) -->
+  <form
+    class="hidden w-full lg:col-start-2 lg:block"
+    role="search"
+    (submit)="onSearch($event, desktopSearchInput.value)"
+  >
+    <label for="product-search" class="sr-only">Find a product</label>
+    <div class="relative">
+      <input
+        #desktopSearchInput
+        id="product-search"
+        type="search"
+        name="q"
+        placeholder="Find a product"
+        autocomplete="off"
+        class="h-11 w-full rounded-full border border-stone-800 bg-white pl-5 pr-14 text-[15px] text-stone-900
+               placeholder:text-stone-500 transition-shadow duration-200
+               focus:outline-none focus:ring-2 focus:ring-stone-900/20"
+      />
+      <button
+        type="submit"
+        aria-label="Search"
+        class="absolute right-0 top-0 flex h-11 w-14 items-center justify-center rounded-r-full bg-black text-white
+               transition-colors duration-200 hover:bg-stone-700
+               focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a68559]"
+      >
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+        </svg>
+      </button>
+    </div>
+  </form>
+
+  <!-- Actions -->
+  <div class="flex items-center gap-1 sm:gap-2 lg:col-start-3 lg:justify-self-end">
+    <!-- Login -->
+    <a
+      routerLink="/login"
+      (click)="closeMenu()"
+      aria-label="Sign in"
+      class="rounded-full p-1.5 text-stone-900 transition duration-200 sm:p-2 hover:-translate-y-0.5 hover:bg-stone-100
+             focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#a68559]"
+    >
+      <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+      </svg>
+    </a>
+
+    <!-- Shopping cart (desktop only; moved into mobile dropdown) -->
+    <a
+      routerLink="/cart"
+      (click)="closeMenu()"
+      [attr.aria-label]="'Shopping cart, ' + bagCount + (bagCount === 1 ? ' item' : ' items')"
+      class="hidden rounded-full p-1.5 text-stone-900 transition duration-200 sm:p-2 lg:inline-flex hover:-translate-y-0.5 hover:bg-stone-100
+             focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#a68559]"
+    >
+      <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+      </svg>
+    </a>
+
+    <!-- Alerts (desktop only; moved into mobile dropdown) -->
+    <button
+      type="button"
+      [attr.aria-label]="alertCount > 0 ? 'Notifications, ' + alertCount + ' unread' : 'Notifications'"
+      class="relative hidden rounded-full p-1.5 text-stone-900 transition duration-200 sm:p-2 lg:inline-flex hover:-translate-y-0.5 hover:bg-stone-100
+             focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#a68559]"
+    >
+      <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+      </svg>
+      @if (alertCount > 0) {
+        <span class="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-semibold leading-none text-white" aria-hidden="true">
+          {{ alertCount > 9 ? '9+' : alertCount }}
+        </span>
+      }
+    </button>
+
+    <!-- User initial / Profile (desktop only when logged in; moved into mobile dropdown) -->
+    @if (isLoggedIn()) {
+      <a
+        routerLink="/profile"
+        (click)="closeMenu()"
+        aria-label="Go to profile"
+        class="hidden h-8 w-8 items-center justify-center rounded-full bg-[#c8a97e] text-sm font-semibold text-white transition duration-200 sm:h-9 sm:w-9 lg:flex hover:-translate-y-0.5 hover:bg-[#b59364]
+               focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a68559]"
+      >
+        {{ userInitial() }}
+      </a>
+    }
+  </div>
+</div>
+
+<!-- Full-viewport mobile slide-out section with links centered in the middle -->
+<div
+  id="mobile-nav-drawer"
+  class="fixed inset-0 z-50 h-dvh w-screen lg:hidden transition-opacity duration-300 ease-out motion-reduce:transition-none"
+  [class]="menuOpen() ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'"
+  [attr.aria-hidden]="!menuOpen()"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Navigation menu"
+>
+  <div
+    class="flex h-full w-full flex-col justify-between overflow-y-auto bg-white px-6 py-5 text-stone-900
+           will-change-transform transition-transform duration-300 ease-out motion-reduce:transition-none"
+    [class]="menuOpen() ? 'translate-x-0' : '-translate-x-full'"
+  >
+    <!-- Top row: Logo + Close (X) -->
+    <div class="flex shrink-0 items-center justify-between">
+      <a
+        routerLink="/"
+        (click)="closeMenu()"
+        aria-label="Urban Nomad Home"
+        class="flex items-center gap-2 text-stone-900"
+      >
+        <img
+          src="/logo-transparent-background.png"
+          alt="Urban Nomad"
+          class="h-10 w-auto object-contain"
+        />
+      </a>
+      <button
+        type="button"
+        (click)="closeMenu()"
+        aria-label="Close menu"
+        class="rounded-full p-1.5 text-stone-700 transition-colors hover:bg-stone-100 hover:text-black"
+      >
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Middle section: centered horizontally and vertically -->
+    <div class="mx-auto my-auto flex w-full max-w-xs flex-col items-center py-6 text-center">
+      <!-- Primary links -->
+      <nav aria-label="Primary mobile navigation" class="w-full">
+        <ul class="flex flex-col items-center gap-4">
+          @for (link of links; track link.path) {
+            <li>
+              <a
+                [routerLink]="link.path"
+                [routerLinkActiveOptions]="{ exact: link.path === '/' }"
+                routerLinkActive="text-[#a68559]"
+                (click)="closeMenu()"
+                class="block text-sm font-semibold uppercase tracking-normal text-stone-900 transition-colors hover:text-[#a68559]"
+              >
+                {{ link.label }}
+              </a>
+            </li>
+          }
+        </ul>
+      </nav>
+
+      <!-- Drawer search bar -->
+      <form
+        class="mt-6 w-full border-b border-stone-200 pb-6"
+        role="search"
+        (submit)="onSearch($event, drawerSearchInput.value)"
+      >
+        <label for="drawer-product-search" class="sr-only">Find a product</label>
+        <div class="flex items-center justify-center gap-2">
+          <input
+            #drawerSearchInput
+            id="drawer-product-search"
+            type="search"
+            name="q"
+            placeholder="FIND A PRODUCT"
+            autocomplete="off"
+            class="w-full bg-transparent text-center text-sm font-medium uppercase tracking-normal text-stone-900 placeholder:text-stone-700 focus:outline-none"
+          />
+          <button
+            type="submit"
+            aria-label="Search"
+            class="shrink-0 p-1 text-stone-900 transition-colors hover:text-[#a68559]"
+          >
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+          </button>
+        </div>
+      </form>
+
+      <!-- Secondary links -->
+      <nav aria-label="Secondary mobile navigation" class="mt-6 w-full">
+        <ul class="flex flex-col items-center gap-4">
+          @for (link of headerLinks; track link.path) {
+            <li>
+              <a
+                [routerLink]="link.path"
+                [routerLinkActiveOptions]="{ exact: link.path === '/' }"
+                routerLinkActive="text-[#a68559]"
+                (click)="closeMenu()"
+                class="block text-sm font-normal uppercase tracking-normal text-stone-700 transition-colors hover:text-stone-900"
+              >
+                {{ link.label }}
+              </a>
+            </li>
+          }
+        </ul>
+      </nav>
+
+      <!-- Cart, Notifications & User Initial moved into dropdown list -->
+      <div class="mt-6 w-full border-t border-stone-200 pt-5">
+        <ul class="flex flex-col items-center gap-4">
+          <li>
+            <a
+              routerLink="/cart"
+              (click)="closeMenu()"
+              class="inline-flex items-center justify-center gap-3 text-sm font-medium uppercase tracking-normal text-stone-800 transition-colors hover:text-[#a68559]"
+            >
+              <svg class="h-5 w-5 text-stone-900" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+              </svg>
+              <span>Cart</span>
+              @if (bagCount > 0) {
+                <span class="rounded-full bg-stone-900 px-2 py-0.5 text-xs font-semibold text-white">
+                  {{ bagCount }}
+                </span>
+              }
+            </a>
+          </li>
+
+          <li>
+            <button
+              type="button"
+              class="inline-flex items-center justify-center gap-3 text-sm font-medium uppercase tracking-normal text-stone-800 transition-colors hover:text-[#a68559]"
+            >
+              <svg class="h-5 w-5 text-stone-900" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+              </svg>
+              <span>Notifications</span>
+              @if (alertCount > 0) {
+                <span class="rounded-full bg-red-600 px-2 py-0.5 text-xs font-semibold text-white">
+                  {{ alertCount > 9 ? '9+' : alertCount }}
+                </span>
+              }
+            </button>
+          </li>
+
+          @if (isLoggedIn()) {
+            <li>
+              <a
+                routerLink="/profile"
+                (click)="closeMenu()"
+                class="inline-flex items-center justify-center gap-3 text-sm font-medium uppercase tracking-normal text-stone-800 transition-colors hover:text-[#a68559]"
+              >
+                <span class="flex h-8 w-8 items-center justify-center rounded-full bg-[#c8a97e] text-sm font-semibold text-white">
+                  {{ userInitial() }}
+                </span>
+                <span>Profile</span>
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
+
+      <!-- Social links inside mobile dropdown -->
+      <div class="mt-6 w-full border-t border-stone-200 pt-5">
+        <ul class="flex items-center justify-center gap-6">
+          <li>
+            <a
+              href="https://www.instagram.com/bokabalisa/"
+              target="_blank"
+              rel="noopener"
+              aria-label="Instagram"
+              class="block rounded p-1.5 text-stone-900 transition duration-200 hover:-translate-y-0.5 hover:opacity-60"
+            >
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="5" />
+                <circle cx="12" cy="12" r="4" />
+                <circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none" />
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.tiktok.com/@lisabokaba4"
+              target="_blank"
+              rel="noopener"
+              aria-label="TikTok"
+              class="block rounded p-1.5 text-stone-900 transition duration-200 hover:-translate-y-0.5 hover:opacity-60"
+            >
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" />
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.facebook.com/lisa.bokaba/"
+              target="_blank"
+              rel="noopener"
+              aria-label="Facebook"
+              class="block rounded p-1.5 text-stone-900 transition duration-200 hover:-translate-y-0.5 hover:opacity-60"
+            >
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M14.6 22v-8.6h2.9l.4-3.4h-3.3V7.8c0-1 .3-1.7 1.7-1.7h1.8V3.1c-.3 0-1.4-.1-2.7-.1-2.7 0-4.5 1.6-4.5 4.6V10H8v3.4h2.9V22h3.7z" />
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom spacer for visual balance -->
+    <div class="h-4 shrink-0" aria-hidden="true"></div>
+  </div>
+</div>
+
+<!-- Desktop link bar -->
+<nav
+  #panel
+  id="main-links"
+  aria-label="Main"
+  class="hidden w-full bg-black text-white lg:block"
+>
+  <ul
+    class="mx-auto flex max-w-[1380px] flex-wrap items-center justify-center gap-x-6 gap-y-1 px-4 sm:px-6 lg:gap-8 lg:px-8"
+  >
+    @for (link of links; track link.path) {
+      <li>
+        <a
+          [routerLink]="link.path"
+          [routerLinkActiveOptions]="{ exact: link.path === '/' }"
+          routerLinkActive="after:scale-x-100"
+          (click)="closeMenu()"
+          class="relative inline-block py-3.5 text-[13px] font-semibold uppercase tracking-normal text-white
+                 after:absolute after:bottom-2 after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0
+                 after:bg-[#c8a97e] after:transition-transform after:duration-300 after:ease-out
+                 hover:after:scale-x-100
+                 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        >
+          {{ link.label }}
+        </a>
+      </li>
+    }
+  </ul>
+</nav>
