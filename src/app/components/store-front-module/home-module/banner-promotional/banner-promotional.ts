@@ -9,11 +9,11 @@ import { RouterLink } from '@angular/router';
 })
 export class BannerPromotional {
   // Files in /public are served from the site root, so the "public" folder is not part of the URL
-  @Input() image = '/main-banner-desktop.png';
-  @Input() imageMobile = '/main-banner-mobile.png';
+  @Input() image = '/product-catalogue-banner-desktop.png';
+  @Input() imageMobile = '/product-catalogue-banner-desktop.png';
   @Input() imageAlt = 'Smiling woman posing in trendy clothes';
-  @Input() heading = 'Up to 30% off this season';
-  @Input() subheading = 'Refresh your wardrobe with our featured pieces, on sale for a limited time.';
+  @Input() heading = 'Regaining Self Confidence';
+  @Input() subheading = 'The core inspiration behind Urban Nomad is empowering individuals to regain self-confidence through wearable art.';
   @Input() ctaLabel = 'Shop on sale';
   @Input() ctaLink = '/featured';
 }
