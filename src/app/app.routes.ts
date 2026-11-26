@@ -18,7 +18,6 @@ import { guestGuard } from './services/auth-module/guest-gaurd.service';
 
 export const routes: Routes = [
   { path: '', component: Home },
-
   { path: 'featured', component: FeaturedProductsOnSale },
   { path: 'trending', component: TrendingNow },
   { path: 'clearance', component: ClearanceSale },
