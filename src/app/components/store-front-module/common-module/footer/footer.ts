@@ -17,7 +17,7 @@ interface FooterColumn {
 interface SocialLink {
   name: string;
   href: string;
-  icon: 'instagram' | 'pinterest' | 'tiktok' | 'youtube';
+  icon: 'instagram' | 'tiktok' | 'facebook';
 }
 
 @Component({
@@ -60,10 +60,9 @@ export class Footer {
   ];
 
   readonly socialLinks: SocialLink[] = [
-    { name: 'Instagram', href: 'https://instagram.com', icon: 'instagram' },
-    { name: 'Pinterest', href: 'https://pinterest.com', icon: 'pinterest' },
-    { name: 'TikTok', href: 'https://tiktok.com', icon: 'tiktok' },
-    { name: 'YouTube', href: 'https://youtube.com', icon: 'youtube' },
+    { name: 'Instagram', href: 'https://www.instagram.com/bokabalisa/', icon: 'instagram' },
+    { name: 'TikTok', href: 'https://www.tiktok.com/@lisabokaba4', icon: 'tiktok' },
+    { name: 'Facebook', href: 'https://www.facebook.com/lisa.bokaba/', icon: 'facebook' },
   ];
 
   onSubscribe(event: Event): void {
